@@ -1,96 +1,75 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PlayerMovement : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerMovement : Entity
 {
-    [Header("Movement Speeds")]
+    //Move Speed
     public float walkSpeed = 5f;
     public float sprintSpeed = 8f;
     public float crouchSpeed = 2.5f;
-    public float airMultiplier = 0.4f;
+    public float airMultiplier = 0.5f;
 
-    [Header("Jumping")]
+    //Jumping
     public float jumpForce = 5f;
     public float jumpCooldown = 0.25f;
-    bool readyToJump = true;
+    private bool readyToJump = true;
 
-    [Header("Crouching")]
+    //Crouching
     public float crouchYScale = 0.5f;
-    float startYScale;
+    private float startYScale;
 
-    [Header("Ground Check")]
+    //Ground Check
     public Transform groundCheckPoint;
     public float groundCheckRadius = 0.3f;
     public LayerMask whatIsGround;
-    bool grounded;
+    private bool grounded;
 
-    [Header("Keybinds")]
+    //Keybinds
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
     public KeyCode crouchKey = KeyCode.LeftControl;
 
-    [Header("References")]
+    //References
     public Transform orientation;
 
-    float horizontalInput;
-    float verticalInput;
+    private float horizontalInput;
+    private float verticalInput;
+    private float moveSpeed;
 
-    float moveSpeed;
-
-    Vector3 moveDirection;
-
-    Rigidbody rb;
+    private Vector3 moveDirection;
+    private Rigidbody rb;
 
     private void Start()
     {
+        base.Start();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        readyToJump = true;
         startYScale = transform.localScale.y;
     }
 
     private void Update()
     {
-        //Ground Check
+        // Ground check
         grounded = Physics.CheckSphere(groundCheckPoint.position, groundCheckRadius, whatIsGround);
 
-        MyInput();
-        SpeedControl();
-    }
-
-    private void FixedUpdate()
-    {
-        MovePlayer();
-    }
-
-    private void MyInput()
-    {
+        // Input
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // Sprint
-        if (Input.GetKey(sprintKey))
-            moveSpeed = sprintSpeed;
-        else
-            moveSpeed = walkSpeed;
+        moveSpeed = Input.GetKey(sprintKey) ? sprintSpeed : walkSpeed;
 
         // Crouch
         if (Input.GetKeyDown(crouchKey))
         {
-            transform.localScale = new Vector3(
-                transform.localScale.x,
-                crouchYScale,
-                transform.localScale.z);
-
+            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
         }
-
         if (Input.GetKeyUp(crouchKey))
         {
-            transform.localScale = new Vector3(
-                transform.localScale.x,
-                startYScale,
-                transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
         }
 
         // Jump
@@ -98,56 +77,42 @@ public class PlayerMovement : MonoBehaviour
         {
             readyToJump = false;
             Jump();
-
             Invoke(nameof(ResetJump), jumpCooldown);
         }
     }
 
-    private void MovePlayer()
+    private void FixedUpdate()
     {
-        moveDirection = orientation.forward * verticalInput
-                      + orientation.right * horizontalInput;
-
-        float actualSpeed = moveSpeed;
-
-        if (!grounded)
-            actualSpeed = moveSpeed;
-
-        rb.linearVelocity = new Vector3(
-            moveDirection.normalized.x * actualSpeed,
-            rb.linearVelocity.y,
-            moveDirection.normalized.z * actualSpeed);
+        MovePlayer();
     }
 
-    private void SpeedControl()
+    private void MovePlayer()
     {
-        Vector3 flatVel = new Vector3(
-            rb.linearVelocity.x,
-            0f,
-            rb.linearVelocity.z);
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        moveDirection.Normalize();
 
-        if (flatVel.magnitude > moveSpeed)
-        {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(
-                limitedVel.x,
-                rb.linearVelocity.y,
-                limitedVel.z);
-        }
+        // Horizontal movement
+        float currentSpeed = grounded ? moveSpeed : moveSpeed;
+        Vector3 horizontalVelocity = new Vector3(moveDirection.x * currentSpeed, 0f, moveDirection.z * currentSpeed);
+
+        rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
     }
 
     private void Jump()
     {
-        rb.linearVelocity = new Vector3(
-            rb.linearVelocity.x,
-            0f,
-            rb.linearVelocity.z);
-
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        // Reset vertical velocity before jump
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    protected override void Die()
+    {
+        Debug.Log("Player died!");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
