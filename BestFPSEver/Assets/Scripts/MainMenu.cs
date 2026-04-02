@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     public TMP_Text highScoreUI;
     
-    string newGameScene = "SampleScene";
+    string newGameScene = "Playground";
     
     public AudioClip bg_music;
     public AudioSource main_channel;
@@ -14,7 +14,6 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         main_channel.PlayOneShot(bg_music);
-        
         
         int highScore = SaveLoadManager.Instance.LoadHighScore();
         highScoreUI.text = $"Highscore: {highScore}";
@@ -29,7 +28,7 @@ public class MainMenu : MonoBehaviour
     
     public void ExitApplication()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
         UnityEditor.EditorApplication.isPlaying = false;
         
 #else
