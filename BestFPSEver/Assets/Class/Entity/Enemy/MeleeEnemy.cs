@@ -1,52 +1,51 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class MeleeEnemy : Entity
 {
     [Header("Enemy Settings")]
-    public float moveSpeed = 3f;
     public float attackRange = 2f;
     public float attackDamage = 10f;
     public float attackCooldown = 1.5f;
 
     private Transform target;
     private bool canAttack = true;
-    private Rigidbody rb;
+    private NavMeshAgent agent;
 
-    private void Start()
+    protected override void Start()
     {
         base.Start();
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.stoppingDistance = attackRange;
 
         GameObject playerObj = GameObject.FindWithTag("Player");
         if (playerObj != null)
             target = playerObj.transform;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (target == null) return;
 
-        // Move towards player
-        Vector3 direction = (target.position - transform.position).normalized;
-        Vector3 move = direction * moveSpeed * Time.fixedDeltaTime;
+        // Move toward player using NavMesh
+        agent.SetDestination(target.position);
 
-        rb.MovePosition(rb.position + move);
+        float distance = Vector3.Distance(transform.position, target.position);
 
-        // Rotate towards player smoothly
-        Vector3 lookDir = new Vector3(direction.x, 0, direction.z);
-        if (lookDir != Vector3.zero)
+        if (distance <= attackRange && canAttack)
         {
-            Quaternion targetRot = Quaternion.LookRotation(lookDir);
-            rb.rotation = Quaternion.Slerp(rb.rotation, targetRot, 10f * Time.fixedDeltaTime);
+            Attack();
         }
     }
 
     private void Attack()
     {
         canAttack = false;
+
+        // Stop moving while attacking
+        agent.isStopped = true;
 
         Entity playerEntity = target.GetComponent<Entity>();
         if (playerEntity != null)
@@ -61,8 +60,11 @@ public class MeleeEnemy : Entity
 
         if (playerEntity != null)
         {
-            playerEntity.TakeDamage(attackDamage);
             canAttack = false;
+            agent.isStopped = true;
+
+            playerEntity.TakeDamage(attackDamage);
+
             Invoke(nameof(ResetAttack), attackCooldown);
         }
     }
@@ -70,5 +72,6 @@ public class MeleeEnemy : Entity
     private void ResetAttack()
     {
         canAttack = true;
+        agent.isStopped = false;
     }
 }
