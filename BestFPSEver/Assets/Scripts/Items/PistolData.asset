@@ -21,5 +21,9 @@ MonoBehaviour:
   worldPrefab: {fileID: 0}
   slot: 0
   damage: 10
-  fireRate: 2
+  fireRate: 5
   range: 20
+  spray: 20
+  magazine: 12
+  isAutomatic: 1
+  reloadTime: 0.5
