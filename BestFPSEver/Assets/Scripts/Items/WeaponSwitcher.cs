@@ -18,8 +18,26 @@ public class WeaponSwitcher : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SetActiveWeapon(1);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            weapons[currentIndex].Shoot();
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            SetActiveWeapon(2);
+
+        WeaponBehaviour currentWeapon = weapons[currentIndex];
+
+        if (currentWeapon.data.isAutomatic)
+        {
+            if (Input.GetKey(KeyCode.Space))
+                currentWeapon.Shoot();
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+                currentWeapon.Shoot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            weapons[currentIndex].Reload();
+        }
     }
 
     void SetActiveWeapon(int index)
