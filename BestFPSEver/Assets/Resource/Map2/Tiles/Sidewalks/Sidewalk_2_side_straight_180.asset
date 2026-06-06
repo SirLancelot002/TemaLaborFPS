@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c72ab8eb859a5f43ae1e72ad19ba0b5, type: 3}
+  m_Name: Sidewalk_2_side_straight_180
+  m_EditorClassIdentifier: Assembly-CSharp::Tile
+  prefab: {fileID: 198914, guid: ce5d7d8a810c71441ac5530ec16a5d41, type: 3}
+  category: 1
+  north: 0
+  east: 1
+  south: 0
+  west: 1
+  rotation: 180
+  weight: 1

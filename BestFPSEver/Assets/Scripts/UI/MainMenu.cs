@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     public TMP_Text highScoreUI;
     
-    string newGameScene = "Playground";
+    string newGameScene = "MapGenerated";
     
     public AudioClip bg_music;
     public AudioSource main_channel;
