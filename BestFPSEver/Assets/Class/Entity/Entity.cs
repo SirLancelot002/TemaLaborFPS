@@ -6,7 +6,7 @@ public class Entity : MonoBehaviour
     public float maxHP = 100f;
     public float currentHP;
 
-    protected void Start()
+     protected virtual void Start()
     {
         currentHP = maxHP;
     }
