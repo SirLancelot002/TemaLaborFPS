@@ -25,12 +25,12 @@ public class WeaponSwitcher : MonoBehaviour
 
         if (currentWeapon.data.isAutomatic)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetMouseButton(0))
                 currentWeapon.Shoot();
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(0))
                 currentWeapon.Shoot();
         }
 
