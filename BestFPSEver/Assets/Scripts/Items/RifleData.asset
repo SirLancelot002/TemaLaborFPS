@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29542946bd70f1d4e82e15ea166caa4d, type: 3}
   m_Name: RifleData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  itemName: Rifle
+  itemName: Barrett M82A1
   weight: 5
   value: 1500
   isDestructible: 0
@@ -20,7 +20,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   worldPrefab: {fileID: 8861018534708125288, guid: e255ad384286fce4f876c07a7e5e1d25, type: 3}
   slot: 0
-  damage: 50
+  damage: 75
   fireRate: 1
   range: 50
   spray: 5

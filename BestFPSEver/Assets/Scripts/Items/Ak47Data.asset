@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29542946bd70f1d4e82e15ea166caa4d, type: 3}
   m_Name: Ak47Data
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  itemName: Ak-67
+  itemName: AK47
   weight: 10
   value: 10000
   isDestructible: 0
@@ -20,7 +20,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   worldPrefab: {fileID: 647499141696943476, guid: 91ae9411a4d02cf41964a3f538884b64, type: 3}
   slot: 0
-  damage: 10
+  damage: 20
   fireRate: 6
   range: 1000
   spray: 5

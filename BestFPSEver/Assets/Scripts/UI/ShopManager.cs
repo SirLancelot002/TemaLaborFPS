@@ -29,13 +29,16 @@ public class ShopManager : MonoBehaviour
         Instance = this;
     }
 
-    void OnEnable()
+    void Start()
     {
         RefreshShop();
     }
 
     void RefreshShop()
     {
+        if (SaveLoadManager.Instance == null) return;
+        if (coinText == null) return;
+
         int coins = SaveLoadManager.Instance.LoadCoins();
         coinText.text = $"Coin: {coins}";
 
@@ -43,6 +46,19 @@ public class ShopManager : MonoBehaviour
 
         foreach (var item in shopItems)
         {
+            if (item.weaponData == null)
+            {
+                Debug.Log("WeaponData null!");
+                continue;
+            }
+            if (item.weaponNameText == null)
+            {
+                Debug.Log("WeaponNameText null!");
+                continue;
+            }
+
+            Debug.Log($"Item: {item.weaponData.itemName}, Owned: {owned.Contains(item.weaponData.itemName)}");
+
             // Név és ár kiírása
             item.weaponNameText.text = item.weaponData.itemName;
             item.priceText.text = $"{item.price} coin";
@@ -89,6 +105,10 @@ public class ShopManager : MonoBehaviour
         SaveLoadManager.Instance.SaveOwnedWeapons(owned);
 
         Debug.Log($"Megvetted: {item.weaponData.itemName}");
+
+        if (LoadoutManager.Instance != null)
+            LoadoutManager.Instance.RefreshLoadout();
+
         RefreshShop();
     }
 }

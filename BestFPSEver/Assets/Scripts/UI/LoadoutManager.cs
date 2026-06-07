@@ -32,8 +32,12 @@ public class LoadoutManager : MonoBehaviour
         RefreshLoadout();
     }
 
-    void RefreshLoadout()
+    public void RefreshLoadout()
     {
+
+        if (SaveLoadManager.Instance == null) return;
+        if (selectedWeaponText == null) return;
+
         var owned = SaveLoadManager.Instance.LoadOwnedWeapons();
         string selected = SaveLoadManager.Instance.LoadSelectedWeapon();
 

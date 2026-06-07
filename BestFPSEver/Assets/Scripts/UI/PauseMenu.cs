@@ -41,6 +41,8 @@ public class PauseMenu : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void LoadMenu()
