@@ -18,7 +18,6 @@ public class SaveLoadManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(this);
-
     }
 
     // --- COIN ---

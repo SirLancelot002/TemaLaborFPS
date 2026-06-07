@@ -4,6 +4,7 @@ public class WeaponSwitcher : MonoBehaviour
 {
     public WeaponBehaviour[] weapons;
     private int currentIndex = 0;
+    private int largeWeaponIndex = 0; // M16A1 alapból
 
     [Header("UI")]
     public WeaponInventoryUI inventoryUI;
@@ -16,7 +17,6 @@ public class WeaponSwitcher : MonoBehaviour
 
         // Mentett nagy fegyver betöltése (1-es slot)
         string selectedWeapon = SaveLoadManager.Instance.LoadSelectedWeapon();
-        int largeWeaponIndex = 0; // M16A1 alapból
 
         for (int i = 0; i < weapons.Length - 1; i++) // utolsót kihagyjuk (pisztoly)
         {
@@ -33,7 +33,7 @@ public class WeaponSwitcher : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            SetActiveWeapon(0);
+            SetActiveWeapon(largeWeaponIndex);
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SetActiveWeapon(weapons.Length - 1);
