@@ -13,18 +13,20 @@ public class ExtractionZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.transform.root.CompareTag("Player"))
         {
             playerInside = true;
+            Debug.Log("Player entered extraction zone");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.transform.root.CompareTag("Player"))
         {
             playerInside = false;
             timer = 0;
+            Debug.Log("Player exited extraction zone");
         }
     }
 
