@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.AI.Navigation;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -22,6 +23,9 @@ public class MapGeneration : MonoBehaviour
 
     private Cell[,] grid;
 
+    [SerializeField]
+    private NavMeshSurface navMeshSurface;
+
     [ContextMenu("Generate")]
     public void GenerateMap()
     {
@@ -37,6 +41,8 @@ public class MapGeneration : MonoBehaviour
         Collapse();
 
         Spawn();
+
+        navMeshSurface.BuildNavMesh();
 
         Debug.Log("Seed: " + seed);
     }
