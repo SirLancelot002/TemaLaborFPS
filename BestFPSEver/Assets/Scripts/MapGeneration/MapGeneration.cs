@@ -22,11 +22,11 @@ public class MapGeneration : MonoBehaviour
     public int seed;
 
     [Header("Items")]
-    public List<GameObject> propPrefabs;
-    [Range(0f, 1f)] public float propSpawnChance = 0.1f;
-    public float propClearance = 1f;
-    public LayerMask propCollisionMask;
-    public float propSpawnY = 0.2302948f;
+    public List<GameObject> itemPrefabs;
+    [Range(0f, 1f)] public float itemSpawnChance = 0.1f;
+    public float itemClearance = 1f;
+    public LayerMask itemCollisionMask;
+    public float itemSpawnY = 0.2302948f;
 
     private Cell[,] grid;
 
@@ -37,6 +37,7 @@ public class MapGeneration : MonoBehaviour
     public void GenerateMap()
     {
         LoadTiles();
+        LoadItems();
 
         Clear();
 
@@ -49,39 +50,39 @@ public class MapGeneration : MonoBehaviour
 
         Spawn();
 
-        SpawnProps();
+        SpawnItems();
 
         navMeshSurface.BuildNavMesh();
 
         Debug.Log("Seed: " + seed);
     }
 
-    void SpawnProps()
+
+    void SpawnItems()
     {
-        if (propPrefabs == null || propPrefabs.Count == 0)
+        if (itemPrefabs == null || itemPrefabs.Count == 0)
             return;
 
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
-                TrySpawnPropAtCell(x, y);
+                TrySpawnItemAtCell(x, y);
     }
 
-    bool TrySpawnPropAtCell(int x, int y)
+    bool TrySpawnItemAtCell(int x, int y)
     {
-        if (Random.value > propSpawnChance)
+        if (Random.value > itemSpawnChance)
             return false;
 
-        var prefab = propPrefabs[Random.Range(0, propPrefabs.Count)];
+        var prefab = itemPrefabs[Random.Range(0, itemPrefabs.Count)];
         if (prefab == null)
             return false;
 
-        Vector3 pos = new Vector3(x * tileSize, propSpawnY, y * tileSize);
+        Vector3 pos = new Vector3(x * tileSize, itemSpawnY, y * tileSize);
 
-        // simple overlap check using a box centered on the cell
-        if (propCollisionMask.value != 0)
+        if (itemCollisionMask.value != 0)
         {
-            int layerMask = propCollisionMask.value;
-            Collider[] hits = Physics.OverlapBox(pos + Vector3.up * 0.5f, Vector3.one * (propClearance * 0.5f), Quaternion.identity, layerMask);
+            int layerMask = itemCollisionMask.value;
+            Collider[] hits = Physics.OverlapBox(pos + Vector3.up * 0.5f, Vector3.one * (itemClearance * 0.5f), Quaternion.identity, layerMask);
             if (hits != null && hits.Length > 0)
             {
                 return false;
@@ -110,7 +111,6 @@ public class MapGeneration : MonoBehaviour
         {
             InitializeGrid();
 
-            // Start the algorithm from the center cell by collapsing it to a random tile.
             if (tiles == null || tiles.Count == 0)
                 Debug.LogWarning("No tiles available to use as starting tile in the center.");
             else
@@ -281,7 +281,6 @@ public class MapGeneration : MonoBehaviour
                 continue;
             }
 
-            // If this cell sits on the map boundary, require the outer-facing edge to be a Building
             if (x == 0 && tile.west != TileCategory.Building)
             {
                 valid.Remove(tile);
@@ -384,7 +383,6 @@ public class MapGeneration : MonoBehaviour
 
                 var instance = Instantiate(tile.prefab, pos, rot, transform);
 
-                // Align instance so its bottom-center sits on the grid cell after rotation
                 AlignInstanceToCell(instance, pos);
             }
         }
@@ -435,6 +433,30 @@ public class MapGeneration : MonoBehaviour
 
 #endif
     }
+
+    public void LoadItems()
+    {
+#if UNITY_EDITOR
+        if (itemPrefabs == null)
+            itemPrefabs = new List<GameObject>();
+
+        itemPrefabs.Clear();
+
+        string[] guids = AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/Prefabs/Loot_items" });
+
+        foreach (var guid in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+
+            GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (go != null)
+                itemPrefabs.Add(go);
+        }
+
+        Debug.Log($"Loaded {itemPrefabs.Count} items.");
+#endif
+    }
+
 
     void Clear()
     {
