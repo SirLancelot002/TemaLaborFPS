@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
     private float spawnInterval = 5f;
 
     [SerializeField]
-    private float spawnRadius = 20f;
+    private float spawnRadius = 200f;
 
     private void Start()
     {

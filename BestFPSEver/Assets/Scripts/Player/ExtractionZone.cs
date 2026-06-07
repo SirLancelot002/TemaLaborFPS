@@ -9,6 +9,8 @@ public class ExtractionZone : MonoBehaviour
 
     private bool playerInside;
 
+    private string mainMenuScene = "MainMenu";
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -58,7 +60,7 @@ public class ExtractionZone : MonoBehaviour
         {
             Debug.LogWarning("SaveLoadManager instance not found - cannot save coins.");
         }
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(mainMenuScene);
 
     }
 }
