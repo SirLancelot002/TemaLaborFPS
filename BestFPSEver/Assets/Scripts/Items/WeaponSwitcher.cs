@@ -5,9 +5,25 @@ public class WeaponSwitcher : MonoBehaviour
     public WeaponBehaviour[] weapons;
     private int currentIndex = 0;
 
+    [Header("UI")]
+    public WeaponInventoryUI inventoryUI;
+
     void Start()
     {
-        SetActiveWeapon(0);
+        // Mentett fegyver betöltése
+        string selectedWeapon = SaveLoadManager.Instance.LoadSelectedWeapon();
+
+        int startIndex = 0;
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (weapons[i].data.itemName == selectedWeapon)
+            {
+                startIndex = i;
+                break;
+            }
+        }
+
+        SetActiveWeapon(startIndex);
     }
 
     void Update()
@@ -48,5 +64,10 @@ public class WeaponSwitcher : MonoBehaviour
         }
 
         currentIndex = index;
+
+        if (inventoryUI != null)
+        {
+            inventoryUI.UpdateUI(index); inventoryUI.UpdateUI(index);
+        }
     }
 }

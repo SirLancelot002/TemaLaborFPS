@@ -18,7 +18,7 @@ MonoBehaviour:
   isDestructible: 0
   maxHp: 0
   icon: {fileID: 0}
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 8861018534708125288, guid: e255ad384286fce4f876c07a7e5e1d25, type: 3}
   slot: 0
   damage: 50
   fireRate: 1

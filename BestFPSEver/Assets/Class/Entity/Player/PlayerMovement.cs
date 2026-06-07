@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : Entity
@@ -40,6 +41,9 @@ public class PlayerMovement : Entity
     private Vector3 moveDirection;
     private Rigidbody rb;
 
+    [Header("HP UI")]
+    public TextMeshProUGUI hpText;
+
     private void Start()
     {
         base.Start();
@@ -47,6 +51,7 @@ public class PlayerMovement : Entity
         rb.freezeRotation = true;
 
         startYScale = transform.localScale.y;
+        UpdateHPUI();
     }
 
     private void Update()
@@ -108,6 +113,20 @@ public class PlayerMovement : Entity
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        UpdateHPUI();
+    }
+
+    private void UpdateHPUI()
+    {
+        if (hpText != null)
+        {
+            hpText.text = "HP: " + currentHP + " / " + maxHP;
+        }
     }
 
     protected override void Die()
