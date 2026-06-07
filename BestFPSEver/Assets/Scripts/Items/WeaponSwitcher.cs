@@ -10,20 +10,24 @@ public class WeaponSwitcher : MonoBehaviour
 
     void Start()
     {
-        // Mentett fegyver betöltése
-        string selectedWeapon = SaveLoadManager.Instance.LoadSelectedWeapon();
+        // Elõször mindet kikapcsoljuk
+        foreach (var w in weapons)
+            w.gameObject.SetActive(false);
 
-        int startIndex = 0;
-        for (int i = 0; i < weapons.Length; i++)
+        // Mentett nagy fegyver betöltése (1-es slot)
+        string selectedWeapon = SaveLoadManager.Instance.LoadSelectedWeapon();
+        int largeWeaponIndex = 0; // M16A1 alapból
+
+        for (int i = 0; i < weapons.Length - 1; i++) // utolsót kihagyjuk (pisztoly)
         {
             if (weapons[i].data.itemName == selectedWeapon)
             {
-                startIndex = i;
+                largeWeaponIndex = i;
                 break;
             }
         }
 
-        SetActiveWeapon(startIndex);
+        SetActiveWeapon(largeWeaponIndex);
     }
 
     void Update()
@@ -32,10 +36,7 @@ public class WeaponSwitcher : MonoBehaviour
             SetActiveWeapon(0);
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
-            SetActiveWeapon(1);
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            SetActiveWeapon(2);
+            SetActiveWeapon(weapons.Length - 1);
 
         WeaponBehaviour currentWeapon = weapons[currentIndex];
 
@@ -67,7 +68,7 @@ public class WeaponSwitcher : MonoBehaviour
 
         if (inventoryUI != null)
         {
-            inventoryUI.UpdateUI(index); inventoryUI.UpdateUI(index);
+            inventoryUI.UpdateUI(index);
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29542946bd70f1d4e82e15ea166caa4d, type: 3}
   m_Name: SMGData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  itemName: P-90 SMG
+  itemName: HK MP5
   weight: 2
   value: 2500
   isDestructible: 0
@@ -20,10 +20,10 @@ MonoBehaviour:
   icon: {fileID: 0}
   worldPrefab: {fileID: 2855816089889277477, guid: 1fd930a48e8659c4ca2bb28f913b3182, type: 3}
   slot: 0
-  damage: 25
+  damage: 8
   fireRate: 10
   range: 30
   spray: 12
-  magazine: 90
+  magazine: 50
   isAutomatic: 1
   reloadTime: 0.4
