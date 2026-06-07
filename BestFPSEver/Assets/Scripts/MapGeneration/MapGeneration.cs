@@ -21,6 +21,13 @@ public class MapGeneration : MonoBehaviour
     public bool randomSeed = true;
     public int seed;
 
+    [Header("Items")]
+    public List<GameObject> propPrefabs;
+    [Range(0f, 1f)] public float propSpawnChance = 0.1f;
+    public float propClearance = 1f;
+    public LayerMask propCollisionMask;
+    public float propSpawnY = 0.2302948f;
+
     private Cell[,] grid;
 
     [SerializeField]
@@ -42,9 +49,48 @@ public class MapGeneration : MonoBehaviour
 
         Spawn();
 
+        SpawnProps();
+
         navMeshSurface.BuildNavMesh();
 
         Debug.Log("Seed: " + seed);
+    }
+
+    void SpawnProps()
+    {
+        if (propPrefabs == null || propPrefabs.Count == 0)
+            return;
+
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                TrySpawnPropAtCell(x, y);
+    }
+
+    bool TrySpawnPropAtCell(int x, int y)
+    {
+        if (Random.value > propSpawnChance)
+            return false;
+
+        var prefab = propPrefabs[Random.Range(0, propPrefabs.Count)];
+        if (prefab == null)
+            return false;
+
+        Vector3 pos = new Vector3(x * tileSize, propSpawnY, y * tileSize);
+
+        // simple overlap check using a box centered on the cell
+        if (propCollisionMask.value != 0)
+        {
+            int layerMask = propCollisionMask.value;
+            Collider[] hits = Physics.OverlapBox(pos + Vector3.up * 0.5f, Vector3.one * (propClearance * 0.5f), Quaternion.identity, layerMask);
+            if (hits != null && hits.Length > 0)
+            {
+                return false;
+            }
+        }
+
+        var instance = Instantiate(prefab, pos, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f), transform);
+        AlignInstanceToCell(instance, pos);
+        return true;
     }
 
     void InitializeGrid()
@@ -351,7 +397,7 @@ public class MapGeneration : MonoBehaviour
             return;
 
         Vector3 bottomCenter = new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
-        Vector3 desired = new Vector3(cellPos.x, 0f, cellPos.z);
+        Vector3 desired = new Vector3(cellPos.x, cellPos.y, cellPos.z);
         Vector3 delta = desired - bottomCenter;
 
         instance.transform.position += delta;
