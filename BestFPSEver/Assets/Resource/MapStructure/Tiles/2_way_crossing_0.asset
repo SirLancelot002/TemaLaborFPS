@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: 2_way_crossing_0
   m_EditorClassIdentifier: Assembly-CSharp::Tile
   prefab: {fileID: 2974128967756832929, guid: e6a1556673b6c7347b73012e61ffea1e, type: 3}
-  category: 0
   north: 0
   east: 0
-  south: 2
-  west: 2
+  south: 1
+  west: 1
   rotation: 0
   weight: 1
