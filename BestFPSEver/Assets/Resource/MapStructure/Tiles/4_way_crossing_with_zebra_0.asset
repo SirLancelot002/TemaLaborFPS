@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: 4_way_crossing_with_zebra_0
   m_EditorClassIdentifier: Assembly-CSharp::Tile
   prefab: {fileID: 7478398042950054608, guid: 01f85d2853d20dd4fa3f1783e6975cb6, type: 3}
-  category: 0
-  north: 2
-  east: 2
-  south: 2
-  west: 2
+  north: 1
+  east: 1
+  south: 1
+  west: 1
   rotation: 0
   weight: 1
