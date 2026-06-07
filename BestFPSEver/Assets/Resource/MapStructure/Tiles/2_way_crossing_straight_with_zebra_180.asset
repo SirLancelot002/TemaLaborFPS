@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: 2_way_crossing_straight_with_zebra_180
   m_EditorClassIdentifier: Assembly-CSharp::Tile
   prefab: {fileID: 7158871533932310351, guid: ed7bc33769eea9344a6d11e7a92f0a0a, type: 3}
-  category: 0
   north: 0
-  east: 2
+  east: 1
   south: 0
-  west: 2
+  west: 1
   rotation: 180
   weight: 1

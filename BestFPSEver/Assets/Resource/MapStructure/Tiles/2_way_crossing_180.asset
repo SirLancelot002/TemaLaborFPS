@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: 2_way_crossing_180
   m_EditorClassIdentifier: Assembly-CSharp::Tile
   prefab: {fileID: 2974128967756832929, guid: e6a1556673b6c7347b73012e61ffea1e, type: 3}
-  category: 0
-  north: 2
-  east: 2
+  north: 1
+  east: 1
   south: 0
   west: 0
   rotation: 180
