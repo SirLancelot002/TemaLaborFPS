@@ -28,6 +28,10 @@ public class MapGeneration : MonoBehaviour
     public LayerMask itemCollisionMask;
     public float itemSpawnY = 0.2302948f;
 
+    [Header("Zone")]
+    public GameObject zonePrefab;
+    public bool spawnZone = true;
+
     private Cell[,] grid;
 
     [SerializeField]
@@ -52,9 +56,28 @@ public class MapGeneration : MonoBehaviour
 
         SpawnItems();
 
+        if (spawnZone)
+            SpawnZone();
+
         navMeshSurface.BuildNavMesh();
 
         Debug.Log("Seed: " + seed);
+    }
+
+    void SpawnZone()
+    {
+        if (zonePrefab == null)
+        {
+            Debug.LogWarning("No zonePrefab assigned.");
+            return;
+        }
+
+        int rx = Random.Range(0, width);
+        int ry = Random.Range(0, height);
+
+        Vector3 pos = new Vector3(rx * tileSize, -20, ry * tileSize);
+        var instance = Instantiate(zonePrefab, pos, Quaternion.identity, transform);
+        AlignInstanceToCell(instance, pos);
     }
 
 
