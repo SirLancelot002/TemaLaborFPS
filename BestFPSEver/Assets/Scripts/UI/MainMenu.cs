@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public TMP_Text highScoreUI;
+    public TMP_Text coinUI;
     
     string newGameScene = "MapGenerated";
     
@@ -15,8 +15,8 @@ public class MainMenu : MonoBehaviour
     {
         main_channel.PlayOneShot(bg_music);
         
-        int highScore = SaveLoadManager.Instance.LoadHighScore();
-        highScoreUI.text = $"Highscore: {highScore}";
+        int coins = SaveLoadManager.Instance.LoadCoins();
+        coinUI.text = $"Coin: {coins}";
     }
 
     public void StartNewGame()
