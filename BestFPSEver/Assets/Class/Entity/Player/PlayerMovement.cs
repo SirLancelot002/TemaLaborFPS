@@ -132,6 +132,6 @@ public class PlayerMovement : Entity
     protected override void Die()
     {
         Debug.Log("Player died!");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("MainMenu");
     }
 }
