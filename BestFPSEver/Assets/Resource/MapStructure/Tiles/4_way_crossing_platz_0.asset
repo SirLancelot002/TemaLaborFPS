@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: 4_way_crossing_platz_0
   m_EditorClassIdentifier: Assembly-CSharp::Tile
   prefab: {fileID: 7067040550381128391, guid: 50227a2815dfb3d4aa906f2e45b049d9, type: 3}
-  category: 0
-  north: 2
-  east: 2
-  south: 2
-  west: 2
+  north: 1
+  east: 1
+  south: 1
+  west: 1
   rotation: 0
   weight: 1

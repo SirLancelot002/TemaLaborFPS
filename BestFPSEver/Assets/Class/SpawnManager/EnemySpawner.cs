@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -9,19 +10,38 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float spawnInterval = 5f;
 
-    private IEnumerator SpawnEnemies(float interval, GameObject enemy)
+    [SerializeField]
+    private float spawnRadius = 20f;
+
+    private void Start()
     {
-        yield return new WaitForSeconds(interval);
-        GameObject newEnemy = Instantiate(enemy, new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f)), Quaternion.identity);
-        StartCoroutine(SpawnEnemies(interval, enemy));
-    }
-    void Start()
-    {
-        StartCoroutine(SpawnEnemies(spawnInterval, enemyPrefab));
+        StartCoroutine(SpawnEnemies());
     }
 
-    void Update()
+    private IEnumerator SpawnEnemies()
     {
-        
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnInterval);
+            SpawnEnemy();
+        }
+    }
+
+    private void SpawnEnemy()
+    {
+        Vector3 randomPoint = transform.position + new Vector3(
+            Random.Range(-spawnRadius, spawnRadius),
+            0f,
+            Random.Range(-spawnRadius, spawnRadius)
+        );
+
+        if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, spawnRadius, NavMesh.AllAreas))
+        {
+            Instantiate(enemyPrefab, hit.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Nem találtam érvényes NavMesh pozíciót spawnhoz.");
+        }
     }
 }

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1509fb758904d3e448fba24c3d6ffd48, type: 3}
   m_Name: BagOfMoney
   m_EditorClassIdentifier: Assembly-CSharp::GenericItemData
-  itemName: 
-  weight: 0
-  value: 0
+  itemName: Bag of Money
+  weight: 1
+  value: 500
   isDestructible: 0
   maxHp: 0
   icon: {fileID: 0}
