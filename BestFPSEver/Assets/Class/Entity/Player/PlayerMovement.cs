@@ -44,6 +44,8 @@ public class PlayerMovement : Entity
     [Header("HP UI")]
     public TextMeshProUGUI hpText;
 
+    private string mainMenuScene = "MainMenu";
+
     private void Start()
     {
         base.Start();
@@ -132,6 +134,6 @@ public class PlayerMovement : Entity
     protected override void Die()
     {
         Debug.Log("Player died!");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(mainMenuScene);
     }
 }
