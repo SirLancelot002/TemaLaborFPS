@@ -20,7 +20,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   worldPrefab: {fileID: 6949219968297497114, guid: 55b1fd5f577255c4a8338b61385780ec, type: 3}
   slot: 0
-  damage: 6
+  damage: 10
   fireRate: 4
   range: 20
   spray: 20
